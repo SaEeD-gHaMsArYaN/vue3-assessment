@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import Cookies from 'js-cookie';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<string | null>(null);
@@ -13,37 +14,30 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = userData.username;
     token.value = userData.token;
     if (process.client) {
-      localStorage.setItem('authToken', userData.token);
-      localStorage.setItem('authUser', userData.username);
-      localStorage.setItem('authExpiry', (Date.now() + 30 * 60 * 1000).toString());
+      Cookies.set('authToken', userData.token, { expires: 1 / 48 });
+      Cookies.set('authUser', userData.username, { expires: 1 / 48 });
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     user.value = null;
     token.value = null;
     if (process.client) {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('authUser');
-      localStorage.removeItem('authExpiry');
-      router.push('/');
+      Cookies.remove('authToken');
+      Cookies.remove('authUser');
     }
   };
 
   const checkAuth = () => {
     if (process.client) {
-      const storedToken = localStorage.getItem('authToken');
-      const storedUser = localStorage.getItem('authUser');
-      const storedExpiry = localStorage.getItem('authExpiry');
+      const storedToken = Cookies.get('authToken');
+      const storedUser = Cookies.get('authUser');
 
-      if (storedToken && storedUser && storedExpiry) {
-        const expiryTime = parseInt(storedExpiry, 10);
-        if (Date.now() < expiryTime) {
-          token.value = storedToken;
-          user.value = storedUser;
-        } else {
-          logout();
-        }
+      if (storedToken && storedUser) {
+        token.value = storedToken;
+        user.value = storedUser;
+      } else {
+        logout();
       }
     }
   };

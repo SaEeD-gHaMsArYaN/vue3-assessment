@@ -3,7 +3,7 @@
       <div class="card">
           <Toolbar class="mb-6">
               <template #start>
-                  <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+                  <!-- <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" /> -->
                   <Button label="Delete" icon="pi pi-trash" severity="danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
               </template>
 

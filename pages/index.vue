@@ -72,6 +72,6 @@ const onSubmit = () => {
 
 <style>
   #password input[type="password"] {
-    width: 100%;
+    @apply w-full;
   }
 </style>

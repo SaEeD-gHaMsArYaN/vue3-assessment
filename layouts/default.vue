@@ -2,14 +2,14 @@
   <div>
     <Topbar v-if="isAuthenticated"></Topbar>
 
-    <div class="flex m-[1rem] justify-start h-[calc(100vh_-_107.2px)]" v-if="isAuthenticated">
+    <div class="flex m-[1rem] justify-start" v-if="isAuthenticated" style="height: calc(100vh - 107.2px);">
       <Navbar></Navbar>
       <div class="ms-[1rem] flex-1 overflow-x-auto">
         <slot></slot>
       </div>
     </div>
 
-    <div v-else>
+    <div v-else class="ms-[1rem] flex-1 overflow-x-auto">
       <slot></slot>
     </div>
   </div>
